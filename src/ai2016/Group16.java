@@ -38,6 +38,7 @@ public class Group16 extends AbstractNegotiationParty {
 	 * Each round this method gets called and ask you to accept or offer. The
 	 * first party in the first round is a bit different, it can only propose an
 	 * offer.
+	 * coba komen di sini
 	 *
 	 * @param validActions
 	 *            Either a list containing both accept and offer or only offer.
