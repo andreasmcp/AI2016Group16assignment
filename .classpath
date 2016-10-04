@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="negosimulator.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/Users/MyMacbookPro/Documents/Kuliah/TU%20Delft/Quarter%201/Artificial%20Intelligence/Assignment/PA_1/AI2016Group16assignment/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
