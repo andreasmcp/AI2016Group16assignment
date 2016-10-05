@@ -31,7 +31,7 @@ public class Group16 extends AbstractNegotiationParty {
 
 		// if you need to initialize some variables, please initialize them
 		// below
-		// here
+		// here here
 
 	}
 

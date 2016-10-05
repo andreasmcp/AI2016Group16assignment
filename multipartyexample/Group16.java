@@ -31,7 +31,7 @@ public class Groupn extends AbstractNegotiationParty {
 				+ utilSpace.getReservationValueUndiscounted());
 
 		// if you need to initialize some variables, please initialize them
-		// below
+		// below here
 
 	}
 
