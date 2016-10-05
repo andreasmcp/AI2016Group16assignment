@@ -8,7 +8,6 @@ import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
-import negotiator.issue.Issue;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
@@ -18,6 +17,7 @@ import negotiator.utility.AbstractUtilitySpace;
  */
 public class Group16 extends AbstractNegotiationParty {
 	private Bid lastReceivedBid = null;
+	private Bid lastOfferedBid = null;
 
 	@Override
 	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
@@ -33,7 +33,7 @@ public class Group16 extends AbstractNegotiationParty {
 		// if you need to initialize some variables, please initialize them
 		// below
 		// here here
-		utilSpace.setReservationValue(0.95);
+		utilSpace.setReservationValue(0.9);
 	}
 
 	/**
@@ -48,18 +48,13 @@ public class Group16 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
-
-		// with 50% chance, counter offer
-		// if we are the first party, also offer.
-		if (lastReceivedBid == null || !validActions.contains(Accept.class)
-				|| Math.random() > 0.5) {
-			// Random walker generate bid which owns utility greater than RV
-			Bid offeredBid = generateRandomBid();
-//			while (offeredBid.)
-			
-			return new Offer(getPartyId(), generateRandomBid());
-		} else {
+		// Accept if Utility of lastReceivedBid is equal or greater than RV
+		if (lastReceivedBid != null && this.getUtility(lastReceivedBid) >= this.utilitySpace.getReservationValue()){
+			this.utilitySpace.setReservationValue(this.getUtility(lastReceivedBid));
 			return new Accept(getPartyId(), lastReceivedBid);
+		} else {
+			lastOfferedBid = generateRandomWalkerBid();
+			return new Offer(getPartyId(), lastOfferedBid);
 		}
 	}
 
@@ -78,12 +73,24 @@ public class Group16 extends AbstractNegotiationParty {
 		super.receiveMessage(sender, action);
 		if (action instanceof Offer) {
 			lastReceivedBid = ((Offer) action).getBid();
+		} else {
+			this.utilitySpace.setReservationValue(this.getUtility(lastOfferedBid));
 		}
 	}
 
 	@Override
 	public String getDescription() {
-		return "example party group N";
+		return "Party Group 16";
+	}
+	
+	public Bid generateRandomWalkerBid(){
+		Bid result = null;
+		
+		do{
+			result = generateRandomBid();
+		} while (this.getUtility(result) <= this.utilitySpace.getReservationValue());
+		
+		return result;
 	}
 
 }
