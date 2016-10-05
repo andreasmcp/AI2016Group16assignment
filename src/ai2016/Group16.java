@@ -33,7 +33,7 @@ public class Group16 extends AbstractNegotiationParty {
 		// if you need to initialize some variables, please initialize them
 		// below
 		// here here
-		utilSpace.setReservationValue(0.6);
+		utilSpace.setReservationValue(0.95);
 	}
 
 	/**
