@@ -8,6 +8,7 @@ import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.Offer;
+import negotiator.issue.Issue;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
@@ -32,7 +33,7 @@ public class Group16 extends AbstractNegotiationParty {
 		// if you need to initialize some variables, please initialize them
 		// below
 		// here here
-
+		utilSpace.setReservationValue(0.6);
 	}
 
 	/**
@@ -52,6 +53,10 @@ public class Group16 extends AbstractNegotiationParty {
 		// if we are the first party, also offer.
 		if (lastReceivedBid == null || !validActions.contains(Accept.class)
 				|| Math.random() > 0.5) {
+			// Random walker generate bid which owns utility greater than RV
+			Bid offeredBid = generateRandomBid();
+//			while (offeredBid.)
+			
 			return new Offer(getPartyId(), generateRandomBid());
 		} else {
 			return new Accept(getPartyId(), lastReceivedBid);
