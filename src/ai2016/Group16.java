@@ -1,7 +1,6 @@
 package ai2016;
 
 import java.util.List;
-
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
@@ -20,27 +19,22 @@ public class Group16 extends AbstractNegotiationParty {
 	private Bid lastOfferedBid = null;
 
 	@Override
-	public void init(AbstractUtilitySpace utilSpace, Deadline dl,
-			TimeLineInfo tl, long randomSeed, AgentID agentId) {
+	public void init(AbstractUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl, long randomSeed, AgentID agentId) {
 
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 
-		System.out.println("Discount Factor is "
-				+ utilSpace.getDiscountFactor());
-		System.out.println("Reservation Value is "
-				+ utilSpace.getReservationValueUndiscounted());
+		System.out.println("Discount Factor is " + utilSpace.getDiscountFactor());
+		System.out.println("Reservation Value is " + utilSpace.getReservationValueUndiscounted());
 
 		// if you need to initialize some variables, please initialize them
-		// below
-		// here here
-		utilSpace.setReservationValue(0.9);
+		// below here
+		utilSpace.setReservationValue(0.8);
 	}
 
 	/**
 	 * Each round this method gets called and ask you to accept or offer. The
 	 * first party in the first round is a bit different, it can only propose an
 	 * offer.
-	 * coba komen di sini
 	 *
 	 * @param validActions
 	 *            Either a list containing both accept and offer or only offer.
@@ -48,8 +42,14 @@ public class Group16 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
+		// Check remaining time of negotiation, if almost finished, set RV = 1
+		boolean isAlmostFinished = this.isAlmostFinished();
+		if (isAlmostFinished)
+			utilitySpace.setReservationValue(1.0);
+
 		// Accept if Utility of lastReceivedBid is equal or greater than RV
-		if (lastReceivedBid != null && this.getUtility(lastReceivedBid) >= this.utilitySpace.getReservationValue()){
+		if (!isAlmostFinished && lastReceivedBid != null
+				&& this.getUtility(lastReceivedBid) >= this.utilitySpace.getReservationValue()) {
 			this.utilitySpace.setReservationValue(this.getUtility(lastReceivedBid));
 			return new Accept(getPartyId(), lastReceivedBid);
 		} else {
@@ -82,15 +82,24 @@ public class Group16 extends AbstractNegotiationParty {
 	public String getDescription() {
 		return "Party Group 16";
 	}
-	
-	public Bid generateRandomWalkerBid(){
+
+	public Bid generateRandomWalkerBid() {
 		Bid result = null;
-		
-		do{
+
+		do {
 			result = generateRandomBid();
 		} while (this.getUtility(result) <= this.utilitySpace.getReservationValue());
-		
+
 		return result;
 	}
 
+	public boolean isAlmostFinished() {
+		boolean result = false;
+		TimeLineInfo timeLineInfo = this.getTimeLine();
+
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() + 2 >= timeLineInfo.getTotalTime()))
+			return true;
+
+		return result;
+	}
 }

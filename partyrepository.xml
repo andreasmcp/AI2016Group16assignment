@@ -120,7 +120,7 @@
             <partyRepItem protocolClassPath="negotiator.protocol.MediatorFeedbackBasedProtocol" description="Feedback Hillclimber" classPath="negotiator.parties.FeedbackHillClimber" partyName="Feedback Hillclimber">
                 <properties/>
             </partyRepItem>
-            <partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Party Group16" classPath="/Users/MyMacbookPro/git/AI2016Group16assignment/AI2016Group16assignment/bin/ai2016/Group16.class" partyName="Group16">
+            <partyRepItem protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Party Group 16" classPath="/Users/MyMacbookPro/git/AI2016Group16assignment/AI2016Group16assignment/bin/ai2016/Group16.class" partyName="Group16">
                 <properties/>
             </partyRepItem>
         </partyRepItems>
