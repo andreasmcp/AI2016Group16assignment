@@ -45,7 +45,7 @@ public class Group16 extends AbstractNegotiationParty {
 		// Check remaining time of negotiation, if almost finished, set RV = 1
 		boolean isAlmostFinished = this.isAlmostFinished();
 		if (isAlmostFinished)
-			utilitySpace.setReservationValue(9.9);
+			utilitySpace.setReservationValue(1.0);
 
 		// Accept if Utility of lastReceivedBid is equal or greater than RV
 		if (!isAlmostFinished && lastReceivedBid != null
@@ -97,7 +97,7 @@ public class Group16 extends AbstractNegotiationParty {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
 
-		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() + 2 >= timeLineInfo.getTotalTime()))
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() + 1 >= timeLineInfo.getTotalTime()))
 			return true;
 
 		return result;
