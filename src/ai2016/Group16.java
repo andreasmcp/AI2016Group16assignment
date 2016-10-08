@@ -44,6 +44,10 @@ public class Group16 extends AbstractNegotiationParty {
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Check remaining time of negotiation, if almost finished, set RV = 1
 		boolean isAlmostFinished = this.isAlmostFinished();
+		
+		if (this.utilitySpace.getReservationValue() == 0.0){
+			utilitySpace.setReservationValue(0.75);
+		}
 		if (isAlmostFinished)
 			utilitySpace.setReservationValue(1.0);
 
@@ -85,11 +89,23 @@ public class Group16 extends AbstractNegotiationParty {
 
 	public Bid generateRandomWalkerBid() {
 		Bid result = null;
-
+		Bid prevresult = null;
+		boolean isAlmostFinished = this.isAlmostFinished();
+		
 		do {
+			prevresult = result;
 			result = generateRandomBid();
-		} while (this.getUtility(result) <= this.utilitySpace.getReservationValue());
+			if (this.getUtility(prevresult) > this.getUtility(result)){
+				result = prevresult;
+			}
+			isAlmostFinished = this.isAlmostFinished();
+			
+		} while (this.getUtility(result) <= this.utilitySpace.getReservationValue() && !isAlmostFinished);
 
+		if (this.utilitySpace.getReservationValue() == 1.0){
+			if (this.getUtility(result) < this.getUtility(this.lastOfferedBid) ){
+				result = this.lastOfferedBid;}
+		}
 		return result;
 	}
 
@@ -97,9 +113,10 @@ public class Group16 extends AbstractNegotiationParty {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
 
-		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() + 1 >= timeLineInfo.getTotalTime()))
-			return true;
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime()*3/4))
+			result = true;
 
 		return result;
 	}
+	
 }
