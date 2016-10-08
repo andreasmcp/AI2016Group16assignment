@@ -1,0 +1,3 @@
+sep=;
+Run time (s);Round;Exception;deadline;Agreement;Discounted;#agreeing;min.util.;max.util.;Dist. to Pareto;Dist. to Nash;Social Welfare;Agent 1;Agent 2;Agent 3;Utility 1;Utility 2;Utility 3;Disc. Util. 1;Disc. Util. 2;Disc. Util. 3;Profile 1;Profile 2;Profile 3
+0.095;2;;60s;Yes;No;3;0.48274;0.70336;0.33589;0.53986;1.72444;/Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16@0;/Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16@1;/Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16@2;0.5383333333333333;0.48274268626751987;0.7033627403557543;0.5383333333333333;0.48274268626751987;0.7033627403557543;party1_utility.xml;party2_utility.xml;party_util2.xml

@@ -1,0 +1,6 @@
+sep=;
+Run time (s);Round;Exception;deadline;Agreement;Discounted;#agreeing;min.util.;max.util.;Dist. to Pareto;Dist. to Nash;Social Welfare;Agent 1;Agent 2;Agent 3;Utility 1;Utility 2;Utility 3;Disc. Util. 1;Disc. Util. 2;Disc. Util. 3;Profile 1;Profile 2;Profile 3
+;;failure while running session:negotiator.exceptions.NegotiationPartyTimeoutException: Negotiating party /Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16@8 timed out in chooseAction() method.;;;;;;;;;;;;;;;;;;;;;
+;;failure while running session:negotiator.exceptions.NegotiationPartyTimeoutException: Negotiating party /Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16@13 timed out in chooseAction() method.;;;;;;;;;;;;;;;;;;;;;
+;;failure while running session:negotiator.exceptions.NegotiationPartyTimeoutException: Negotiating party /Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16@18 timed out in chooseAction() method.;;;;;;;;;;;;;;;;;;;;;
+;;failure while running session:negotiator.exceptions.NegotiationPartyTimeoutException: Negotiating party /Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16@24 timed out in chooseAction() method.;;;;;;;;;;;;;;;;;;;;;
