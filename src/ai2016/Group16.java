@@ -113,7 +113,7 @@ public class Group16 extends AbstractNegotiationParty {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
 
-		//assign time limit 3/4 of deadline
+		//assign time limit 3/4 of deadline negotiation
 		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime()*3/4))
 			result = true;
 
