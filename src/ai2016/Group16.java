@@ -26,9 +26,10 @@ public class Group16 extends AbstractNegotiationParty {
 		System.out.println("Discount Factor is " + utilSpace.getDiscountFactor());
 		System.out.println("Reservation Value is " + utilSpace.getReservationValueUndiscounted());
 
-		// if you need to initialize some variables, please initialize them
-		// below here
-		utilSpace.setReservationValue(0.8);
+		// initialization of reservation value if it is not assigned in profile
+		if (this.utilitySpace.getReservationValue() == 0.0){
+			utilitySpace.setReservationValue(0.8);
+		}
 	}
 
 	/**
@@ -44,10 +45,7 @@ public class Group16 extends AbstractNegotiationParty {
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Check remaining time of negotiation, if almost finished, set RV = 1
 		boolean isAlmostFinished = this.isAlmostFinished();
-		
-		if (this.utilitySpace.getReservationValue() == 0.0){
-			utilitySpace.setReservationValue(0.75);
-		}
+
 		if (isAlmostFinished)
 			utilitySpace.setReservationValue(1.0);
 
@@ -102,6 +100,8 @@ public class Group16 extends AbstractNegotiationParty {
 			
 		} while (this.getUtility(result) <= this.utilitySpace.getReservationValue() && !isAlmostFinished);
 
+		//if reservation value is 1 because of deadline, but random bid hasn't found
+		//assign random bid with last offered bid
 		if (this.utilitySpace.getReservationValue() == 1.0){
 			if (this.getUtility(result) < this.getUtility(this.lastOfferedBid) ){
 				result = this.lastOfferedBid;}
@@ -113,6 +113,7 @@ public class Group16 extends AbstractNegotiationParty {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
 
+		//assign time limit 3/4 of deadline
 		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime()*3/4))
 			result = true;
 
