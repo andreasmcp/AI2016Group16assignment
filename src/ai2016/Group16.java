@@ -11,9 +11,6 @@ import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
 
-/**
- * This is your negotiation party.
- */
 public class Group16 extends AbstractNegotiationParty {
 	private Bid lastReceivedBid = null;
 	private Bid lastOfferedBid = null;
@@ -85,6 +82,13 @@ public class Group16 extends AbstractNegotiationParty {
 		return "Party Group 16";
 	}
 
+	/**
+	 * To get bid to offer, use random walker bid with minimum utility = reservation value
+	 * If random bid doesn't reach reservation value within time constraint, then search for best random bid.
+	 * If on the last round the bid still not reach reservation value, then compare with last offered bid
+	 * then choose bid with the best utility
+	 *
+	 */
 	public Bid generateRandomWalkerBid() {
 		Bid result = null;
 		Bid prevresult = null;
@@ -109,6 +113,11 @@ public class Group16 extends AbstractNegotiationParty {
 		return result;
 	}
 
+	/**
+	 * All negotiation has deadline, therefore need to know the deadline
+	 * to determine action to bid another offer or accept
+	 *
+	 */
 	public boolean isAlmostFinished() {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();

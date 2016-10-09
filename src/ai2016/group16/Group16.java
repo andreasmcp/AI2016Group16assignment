@@ -11,9 +11,6 @@ import negotiator.parties.AbstractNegotiationParty;
 import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
 
-/**
- * This is your negotiation party.
- */
 public class Group16 extends AbstractNegotiationParty {
 	private Bid lastReceivedBid = null;
 	private Bid lastOfferedBid = null;
@@ -26,9 +23,10 @@ public class Group16 extends AbstractNegotiationParty {
 		System.out.println("Discount Factor is " + utilSpace.getDiscountFactor());
 		System.out.println("Reservation Value is " + utilSpace.getReservationValueUndiscounted());
 
-		// if you need to initialize some variables, please initialize them
-		// below here
-		utilSpace.setReservationValue(0.8);
+		// initialization of reservation value if it is not assigned in profile
+		if (this.utilitySpace.getReservationValue() == 0.0){
+			utilitySpace.setReservationValue(0.8);
+		}
 	}
 
 	/**
@@ -44,10 +42,7 @@ public class Group16 extends AbstractNegotiationParty {
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Check remaining time of negotiation, if almost finished, set RV = 1
 		boolean isAlmostFinished = this.isAlmostFinished();
-		
-		if (this.utilitySpace.getReservationValue() == 0.0){
-			utilitySpace.setReservationValue(0.75);
-		}
+
 		if (isAlmostFinished)
 			utilitySpace.setReservationValue(1.0);
 
@@ -87,6 +82,13 @@ public class Group16 extends AbstractNegotiationParty {
 		return "Party Group 16";
 	}
 
+	/**
+	 * To get bid to offer, use random walker bid with minimum utility = reservation value
+	 * If random bid doesn't reach reservation value within time constraint, then search for best random bid.
+	 * If on the last round the bid still not reach reservation value, then compare with last offered bid
+	 * then choose bid with the best utility
+	 *
+	 */
 	public Bid generateRandomWalkerBid() {
 		Bid result = null;
 		Bid prevresult = null;
@@ -102,6 +104,8 @@ public class Group16 extends AbstractNegotiationParty {
 			
 		} while (this.getUtility(result) <= this.utilitySpace.getReservationValue() && !isAlmostFinished);
 
+		//if reservation value is 1 because of deadline, but random bid hasn't found
+		//assign random bid with last offered bid
 		if (this.utilitySpace.getReservationValue() == 1.0){
 			if (this.getUtility(result) < this.getUtility(this.lastOfferedBid) ){
 				result = this.lastOfferedBid;}
@@ -109,10 +113,16 @@ public class Group16 extends AbstractNegotiationParty {
 		return result;
 	}
 
+	/**
+	 * All negotiation has deadline, therefore need to know the deadline
+	 * to determine action to bid another offer or accept
+	 *
+	 */
 	public boolean isAlmostFinished() {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
 
+		//assign time limit 3/4 of deadline negotiation
 		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime()*3/4))
 			result = true;
 
