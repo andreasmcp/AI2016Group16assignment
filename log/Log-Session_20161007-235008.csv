@@ -1,0 +1,15 @@
+Starting negotiation session.
+Round 1
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Catering, Drinks: Non-Alcoholic, Location: Your Dorm, Invitations: Plain, Music: Band, Cleanup: Specialized Materials, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Catering, Location: Party Room, Invitations: Custom, Printed, Music: DJ, Cleanup: Specialized Materials, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: Band, Cleanup: Hired Help, ])
+Round 2
+  Turn 1: Party 1       (Accept  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: Band, Cleanup: Hired Help, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Room, Invitations: Photo, Music: MP3, Cleanup: Special Equiment, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: Band, Cleanup: Hired Help, ])
+Round 3
+  Turn 1: Party 1       (Accept  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: Band, Cleanup: Hired Help, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Finger-Food, Drinks: Beer Only, Location: Your Dorm, Invitations: Custom, Printed, Music: Band, Cleanup: Special Equiment, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: Band, Cleanup: Hired Help, ])
+Round 4
+Negotiating party Party 1 timed out in chooseAction() method.

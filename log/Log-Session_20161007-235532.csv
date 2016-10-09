@@ -1,0 +1,56 @@
+Starting negotiation session.
+Round 1
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Ballroom, Invitations: Photo, Music: Band, Cleanup: Specialized Materials, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Catering, Location: Party Room, Invitations: Custom, Handmade, Music: MP3, Cleanup: Specialized Materials, ])
+  Turn 3: Party 3       (Accept  bid:Bid[Food: Catering, Drinks: Catering, Location: Party Room, Invitations: Custom, Handmade, Music: MP3, Cleanup: Specialized Materials, ])
+Round 2
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Non-Alcoholic, Location: Your Dorm, Invitations: Plain, Music: MP3, Cleanup: Hired Help, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Printed, Music: Band, Cleanup: Special Equiment, ])
+  Turn 3: Party 3       (Accept  bid:Bid[Food: Catering, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Printed, Music: Band, Cleanup: Special Equiment, ])
+Round 3
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Room, Invitations: Custom, Handmade, Music: DJ, Cleanup: Special Equiment, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Finger-Food, Drinks: Beer Only, Location: Your Dorm, Invitations: Plain, Music: MP3, Cleanup: Water and Soap, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Ballroom, Invitations: Plain, Music: DJ, Cleanup: Specialized Materials, ])
+Round 4
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Non-Alcoholic, Location: Ballroom, Invitations: Photo, Music: MP3, Cleanup: Hired Help, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Handmade Food, Drinks: Beer Only, Location: Your Dorm, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Finger-Food, Drinks: Non-Alcoholic, Location: Your Dorm, Invitations: Photo, Music: Band, Cleanup: Hired Help, ])
+Round 5
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Non-Alcoholic, Location: Party Room, Invitations: Custom, Handmade, Music: Band, Cleanup: Specialized Materials, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Catering, Location: Your Dorm, Invitations: Plain, Music: Band, Cleanup: Specialized Materials, ])
+  Turn 3: Party 3       (Accept  bid:Bid[Food: Chips and Nuts, Drinks: Catering, Location: Your Dorm, Invitations: Plain, Music: Band, Cleanup: Specialized Materials, ])
+Round 6
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Handmade Cocktails, Location: Your Dorm, Invitations: Photo, Music: Band, Cleanup: Special Equiment, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Catering, Location: Party Room, Invitations: Custom, Handmade, Music: DJ, Cleanup: Specialized Materials, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Finger-Food, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: MP3, Cleanup: Specialized Materials, ])
+Round 7
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Photo, Music: MP3, Cleanup: Special Equiment, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Catering, Location: Party Tent, Invitations: Plain, Music: DJ, Cleanup: Special Equiment, ])
+  Turn 3: Party 3       (Accept  bid:Bid[Food: Chips and Nuts, Drinks: Catering, Location: Party Tent, Invitations: Plain, Music: DJ, Cleanup: Special Equiment, ])
+Round 8
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Catering, Drinks: Non-Alcoholic, Location: Ballroom, Invitations: Photo, Music: DJ, Cleanup: Water and Soap, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Handmade Cocktails, Location: Ballroom, Invitations: Custom, Printed, Music: Band, Cleanup: Hired Help, ])
+  Turn 3: Party 3       (Accept  bid:Bid[Food: Chips and Nuts, Drinks: Handmade Cocktails, Location: Ballroom, Invitations: Custom, Printed, Music: Band, Cleanup: Hired Help, ])
+Round 9
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Finger-Food, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Photo, Music: Band, Cleanup: Water and Soap, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Printed, Music: MP3, Cleanup: Special Equiment, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: MP3, Cleanup: Specialized Materials, ])
+Round 10
+  Turn 1: Party 1       (Accept  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: MP3, Cleanup: Specialized Materials, ])
+  Turn 2: Party 2       (Accept  bid:Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: MP3, Cleanup: Specialized Materials, ])
+Found an agreement: Bid[Food: Chips and Nuts, Drinks: Non-Alcoholic, Location: Party Tent, Invitations: Plain, Music: MP3, Cleanup: Specialized Materials, ]
+Finished negotiation session in 0.093s
+Time (s):		0.09334906
+Rounds:		10
+Agreement?:		Yes
+Discounted?:		No
+3
+Min. utility:		0.49296
+Max. utility:		0.93460
+Distance to pareto:	0.03607
+Distance to Nash:	0.51466
+Social welfare:		2.04506
+Agent utility:		0.61750 (Party 1)
+Agent utility:		0.49296 (Party 2)
+Agent utility:		0.93460 (Party 3)
+
