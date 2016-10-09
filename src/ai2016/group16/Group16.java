@@ -1,4 +1,4 @@
-package ai2016;
+package ai2016.group16;
 
 import java.util.List;
 import negotiator.AgentID;
