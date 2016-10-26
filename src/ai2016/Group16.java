@@ -3,6 +3,7 @@ package ai2016;
 import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
+import negotiator.BidHistory;
 import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -25,7 +26,7 @@ public class Group16 extends AbstractNegotiationParty {
 
 		// initialization of reservation value if it is not assigned in profile
 		if (this.utilitySpace.getReservationValue() == 0.0){
-			utilitySpace.setReservationValue(0.8);
+			utilitySpace.setReservationValue(0.9);
 		}
 	}
 
@@ -113,6 +114,62 @@ public class Group16 extends AbstractNegotiationParty {
 		return result;
 	}
 
+	public Bid generateConcederBid() {
+		Bid result = null;
+		Bid prevresult = null;
+		boolean isTimeOut = this.isTimeOut();
+		double reservationValuetemp = 1.00;
+		
+		do {
+			prevresult = result;
+			result = generateRandomBid();
+			if (this.getUtility(prevresult) > this.getUtility(result)){
+				result = prevresult;
+			}
+			
+		} while ((this.getUtility(result) <= reservationValuetemp) && (this.getUtility(result) >(reservationValuetemp - 0.05)) && !isTimeOut);
+
+		//if reservationValue - 0.3 is lower than actual reservation value, then fill temp with actual RV
+		if ((reservationValuetemp - 0.3) < this.utilitySpace.getReservationValue()){
+			reservationValuetemp = this.utilitySpace.getReservationValue();
+		}
+		
+		//if result is still null because timeout
+		//lower the utility to utility - 0.3, and get any random bid >utility - 0.3
+		if (result == null){
+			do {
+				prevresult = result;
+				result = generateRandomBid();
+				if (this.getUtility(prevresult) > this.getUtility(result)){
+					result = prevresult;
+				}
+				
+			} while ((this.getUtility(result) > (reservationValuetemp - 0.3)));
+
+		}
+		reservationValuetemp = reservationValuetemp - 0.05;
+		
+		utilitySpace.setReservationValue(reservationValuetemp);
+		
+		return result;
+	}
+	
+	public Bid generateSecondHalfBid(int opponentType) {
+		Bid result = null;
+		
+		switch(opponentType){
+			case 1: result = null;
+			case 2: result = generateRandomWalkerBid();
+			case 3: result = null;
+			case 4: result = null;
+			case 5: result = null;
+		}
+		
+		return result;
+	}
+	
+	
+	
 	/**
 	 * All negotiation has deadline, therefore need to know the deadline
 	 * to determine action to bid another offer or accept
@@ -129,4 +186,31 @@ public class Group16 extends AbstractNegotiationParty {
 		return result;
 	}
 	
+	public boolean isTimeOut() {
+		boolean result = false;
+		TimeLineInfo timeLineInfo = this.getTimeLine();
+
+		//assign time limit 1/12 of deadline negotiation
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime()*1/12))
+			result = true;
+
+		return result;
+	}
+	
+	public Bid BiddingStrategy(int OpponentType, float OpponentBidUtility, BidHistory BidHist) {
+		Bid UpcomingBid = null;
+		TimeLineInfo timeLineInfo = this.getTimeLine();
+
+		//assign time limit 1/2 time
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() <= timeLineInfo.getTotalTime()*1/2)){
+			UpcomingBid = generateConcederBid();
+		}
+		else{
+			
+		}
+		
+		
+		return UpcomingBid;
+	}
+
 }

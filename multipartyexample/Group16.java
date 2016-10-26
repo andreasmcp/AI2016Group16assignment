@@ -80,4 +80,5 @@ public class Groupn extends AbstractNegotiationParty {
 		return "example party group N";
 	}
 
+	
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<multilateralTournamentsConfiguration>
+    <tournaments>
+        <tournament>
+            <deadline>
+                <value>60</value>
+                <type>TIME</type>
+                <DEFAULT_TIME_OUT>180</DEFAULT_TIME_OUT>
+            </deadline>
+            <protocolItem hasMediatorProfile="false" hasMediator="false" description="Each agents makes offer, counter-offer, or accepts" classPath="negotiator.protocol.StackedAlternatingOffersProtocol" protocolName="Stacked Alternating Offers Protocol"/>
+            <partyRepItems>
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Random party" classPath="negotiator.parties.RandomCounterOfferNegotiationParty" partyName="Random party">
+                    <properties/>
+                </item>
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Random party 2" classPath="negotiator.parties.RandomCounterOfferNegotiationParty" partyName="Random party 2">
+                    <properties/>
+                </item>
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Party Group 16" classPath="/Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16.class" partyName="Group16">
+                    <properties/>
+                </item>
+            </partyRepItems>
+            <partyProfileItems>
+                <item url="file:etc/templates/partydomain/party1_utility.xml"/>
+                <item url="file:etc/templates/partydomain/party2_utility.xml"/>
+                <item url="file:etc/templates/partydomain/party3_utility.xml"/>
+            </partyProfileItems>
+            <numSessions>5</numSessions>
+            <numberOfNonMediatorsPerSession>3</numberOfNonMediatorsPerSession>
+            <repetitionAllowed>false</repetitionAllowed>
+        </tournament>
+    </tournaments>
+</multilateralTournamentsConfiguration>
