@@ -14,7 +14,7 @@ public class OfferHistory {
 	}
 
 	public OfferHistory(Offer offer) {
-			listOffer = new ArrayList<Offer>();
+		listOffer = new ArrayList<Offer>();
 
 		listOffer.add(offer);
 	}

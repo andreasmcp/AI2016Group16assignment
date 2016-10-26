@@ -22,7 +22,7 @@ public class Agent {
 		offers = new ArrayList<Offer>();
 		issues = new ArrayList<Issue>();
 		List<negotiator.issue.Issue> _issues = offer.getBid().getIssues();
-		double initWeight = ((double)1/_issues.size());
+		double initWeight = ((double) 1 / _issues.size());
 
 		for (negotiator.issue.Issue issue : _issues) {
 			Issue newIssue = new Issue(issue.getName(), issue.getNumber(), initWeight);

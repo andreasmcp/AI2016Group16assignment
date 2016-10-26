@@ -17,7 +17,7 @@ public class Issue {
 		values = new ArrayList<Value>();
 		lastValue = "";
 	}
-	
+
 	public Issue(String name, int number, double weight) {
 		this.name = name;
 		this.number = number;
@@ -77,7 +77,7 @@ public class Issue {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	
+
 	public String getLastValue() {
 		return lastValue;
 	}
@@ -86,24 +86,24 @@ public class Issue {
 		this.lastValue = lastValue;
 	}
 
-	public void UpdateEvaluationValue(){
+	public void UpdateEvaluationValue() {
 		int max = 0;
-		
+
 		for (Value value : values)
 			if (value.getOccurance() > max)
 				max = value.getOccurance();
-		
+
 		for (Value value : values)
-			value.setEvaluation((double)(value.getOccurance()/max));
+			value.setEvaluation((double) (value.getOccurance() / max));
 	}
-	
-	public Value getValue(String name){
+
+	public Value getValue(String name) {
 		Value value = null;
-		
+
 		for (Value _value : values)
 			if (_value.getName().equals(name))
 				return value;
-		
+
 		return value;
 	}
 }

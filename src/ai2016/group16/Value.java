@@ -16,7 +16,7 @@ public class Value {
 		this.evaluation = evaluation;
 		occurance = 0;
 	}
-	
+
 	public Value(String name, double evaluation, int occurance) {
 		this.name = name;
 		this.evaluation = evaluation;
@@ -46,8 +46,8 @@ public class Value {
 	public void setOccurance(int occurance) {
 		this.occurance = occurance;
 	}
-	
-	public void addOccurance(){
+
+	public void addOccurance() {
 		occurance++;
 	}
 }

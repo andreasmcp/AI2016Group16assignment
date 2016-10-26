@@ -277,7 +277,7 @@ public class Group16 extends AbstractNegotiationParty {
 		Agent _agent = null;
 
 		for (Agent agent : agents)
-			if (agent.getId().equals(id)){
+			if (agent.getId().equals(id)) {
 				exist = true;
 				_agent = agent;
 			}
@@ -286,5 +286,13 @@ public class Group16 extends AbstractNegotiationParty {
 			agents.add(new Agent(id, offer));
 		else
 			_agent.addOffer(offer);
+	}
+
+	public double getUtility(String agentId, Bid bid) {
+		for (Agent agent : agents)
+			if (agent.getId().equals(agentId))
+				return agent.getUtility(bid);
+
+		return 0;
 	}
 }
