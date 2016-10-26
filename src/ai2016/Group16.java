@@ -3,7 +3,7 @@ package ai2016;
 import java.util.List;
 import negotiator.AgentID;
 import negotiator.Bid;
-import negotiator.BidHistory;
+//import negotiator.BidHistory;
 import negotiator.Deadline;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
@@ -14,11 +14,12 @@ import negotiator.utility.AbstractUtilitySpace;
 
 public class Group16 extends AbstractNegotiationParty {
 	private Bid lastReceivedBid = null;
+	private Bid BestReceivedBid = null;
 	private Bid lastOfferedBid = null;
 
 	@Override
 	public void init(AbstractUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl, long randomSeed, AgentID agentId) {
-
+		
 		super.init(utilSpace, dl, tl, randomSeed, agentId);
 
 		System.out.println("Discount Factor is " + utilSpace.getDiscountFactor());
@@ -26,8 +27,9 @@ public class Group16 extends AbstractNegotiationParty {
 
 		// initialization of reservation value if it is not assigned in profile
 		if (this.utilitySpace.getReservationValue() == 0.0){
-			utilitySpace.setReservationValue(0.9);
+			utilitySpace.setReservationValue(0.8);
 		}
+		
 	}
 
 	/**
@@ -43,9 +45,10 @@ public class Group16 extends AbstractNegotiationParty {
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Check remaining time of negotiation, if almost finished, set RV = 1
 		boolean isAlmostFinished = this.isAlmostFinished();
-
-		if (isAlmostFinished)
-			utilitySpace.setReservationValue(1.0);
+		
+		
+//		if (isAlmostFinished)
+//			utilitySpace.setReservationValue(1.0);
 
 		// Accept if Utility of lastReceivedBid is equal or greater than RV
 		if (!isAlmostFinished && lastReceivedBid != null
@@ -53,7 +56,8 @@ public class Group16 extends AbstractNegotiationParty {
 			this.utilitySpace.setReservationValue(this.getUtility(lastReceivedBid));
 			return new Accept(getPartyId(), lastReceivedBid);
 		} else {
-			lastOfferedBid = generateRandomWalkerBid();
+			//lastOfferedBid = generateRandomWalkerBid();
+			lastOfferedBid = BiddingStrategy(5);
 			return new Offer(getPartyId(), lastOfferedBid);
 		}
 	}
@@ -73,6 +77,14 @@ public class Group16 extends AbstractNegotiationParty {
 		super.receiveMessage(sender, action);
 		if (action instanceof Offer) {
 			lastReceivedBid = ((Offer) action).getBid();
+			if (BestReceivedBid == null){
+				BestReceivedBid = lastReceivedBid;
+			}else{
+				if (this.getUtility(BestReceivedBid) < this.getUtility(lastReceivedBid)){
+					BestReceivedBid = lastReceivedBid;
+				}
+			}
+				
 		} else {
 			this.utilitySpace.setReservationValue(this.getUtility(lastOfferedBid));
 		}
@@ -114,10 +126,19 @@ public class Group16 extends AbstractNegotiationParty {
 		return result;
 	}
 
+	/**
+	 * To get bid to offer for second half of session
+	 * We practice that bid will come from 1 to actual reservation value
+	 * with iteration -0.05 and also put some logic for timeout 1/12 of the round time
+	 * First option is to generate bid with current reservation value within time limit
+	 * If the bid is not generated, then generate another random bid using current reservation value - 0.3 without time limit
+	 */	
+	
 	public Bid generateConcederBid() {
 		Bid result = null;
 		Bid prevresult = null;
 		boolean isTimeOut = this.isTimeOut();
+		boolean isAlmostFinished = this.isAlmostFinished();
 		double reservationValuetemp = 1.00;
 		
 		do {
@@ -127,11 +148,14 @@ public class Group16 extends AbstractNegotiationParty {
 				result = prevresult;
 			}
 			
-		} while ((this.getUtility(result) <= reservationValuetemp) && (this.getUtility(result) >(reservationValuetemp - 0.05)) && !isTimeOut);
-
-		//if reservationValue - 0.3 is lower than actual reservation value, then fill temp with actual RV
-		if ((reservationValuetemp - 0.3) < this.utilitySpace.getReservationValue()){
+		} while ((this.getUtility(result) >(reservationValuetemp - 0.05)) && !isTimeOut && !isAlmostFinished);
+		
+		//if reservationValue - 0.1 is lower than actual reservation value, then fill temp with actual RV
+		if ((reservationValuetemp - 0.1) < this.utilitySpace.getReservationValue()){
 			reservationValuetemp = this.utilitySpace.getReservationValue();
+		}
+		else{
+			reservationValuetemp = reservationValuetemp - 0.1;
 		}
 		
 		//if result is still null because timeout
@@ -144,10 +168,26 @@ public class Group16 extends AbstractNegotiationParty {
 					result = prevresult;
 				}
 				
-			} while ((this.getUtility(result) > (reservationValuetemp - 0.3)));
+			} while ((this.getUtility(result) > (reservationValuetemp)) && !isTimeOut && !isAlmostFinished);
 
 		}
-		reservationValuetemp = reservationValuetemp - 0.05;
+		
+		//if random generated bid is not good enough compared to last received bid,
+		//then bid lastReceivedBid
+		if (this.getUtility(BestReceivedBid) > this.getUtility(result)){
+			result = this.BestReceivedBid;
+		}
+		
+		//if result is still null
+		// assign with lastOfferedBid if it is not null and just generate random bid if it is null.
+		if (result == null){
+			if (lastOfferedBid != null){
+				result = this.lastOfferedBid;}
+			else{
+				result = generateRandomBid();
+			}
+			
+		}
 		
 		utilitySpace.setReservationValue(reservationValuetemp);
 		
@@ -162,7 +202,7 @@ public class Group16 extends AbstractNegotiationParty {
 			case 2: result = generateRandomWalkerBid();
 			case 3: result = null;
 			case 4: result = null;
-			case 5: result = null;
+			case 5: result = generateConcederBid();
 		}
 		
 		return result;
@@ -189,24 +229,26 @@ public class Group16 extends AbstractNegotiationParty {
 	public boolean isTimeOut() {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
-
-		//assign time limit 1/12 of deadline negotiation
-		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime()*1/12))
+		double startTime = timeLineInfo.getTime();
+		
+		//assign time limit 2s of deadline negotiation
+		if (timeLineInfo != null && timeLineInfo.getCurrentTime() >= (startTime + 2))
 			result = true;
 
 		return result;
 	}
 	
-	public Bid BiddingStrategy(int OpponentType, float OpponentBidUtility, BidHistory BidHist) {
+//	public Bid BiddingStrategy(int OpponentType, float OpponentBidUtility, BidHistory BidHist) {
+	public Bid BiddingStrategy(int OpponentType) {
 		Bid UpcomingBid = null;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
-
+		
 		//assign time limit 1/2 time
 		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() <= timeLineInfo.getTotalTime()*1/2)){
 			UpcomingBid = generateConcederBid();
 		}
 		else{
-			
+			UpcomingBid = generateSecondHalfBid(5);
 		}
 		
 		
