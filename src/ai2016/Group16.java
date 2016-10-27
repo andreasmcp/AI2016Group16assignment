@@ -113,6 +113,7 @@ public class Group16 extends AbstractNegotiationParty {
 		}
 
 		OpUtility = this.getUtility(sender, lastReceivedBid);
+		System.out.println("this");
 	}
 
 	@Override
@@ -331,7 +332,7 @@ public class Group16 extends AbstractNegotiationParty {
 
 	public double getUtility(AgentID agentId, Bid bid) {
 		for (Agent agent : agents)
-			if (agent.getId().equals(agentId))
+			if (agent.getId().equals(agentId.toString()))
 				return agent.getUtility(bid);
 
 		return 0;
