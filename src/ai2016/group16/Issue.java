@@ -102,7 +102,7 @@ public class Issue {
 
 		for (Value _value : values)
 			if (_value.getName().equals(name))
-				return value;
+				return _value;
 
 		return value;
 	}

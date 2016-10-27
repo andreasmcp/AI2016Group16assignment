@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ai2016.group16.Agent;
+import ai2016.group16.GeneralHelper;
 import ai2016.group16.OfferHistory;
 import negotiator.AgentID;
 import negotiator.Bid;
@@ -23,6 +24,7 @@ public class Group16 extends AbstractNegotiationParty {
 	private Bid lastOfferedBid = null;
 	private Bid ourBestBid = null;
 	private double OpUtility = 0;
+	private List<BidTemp> bestBids;
 
 	@Override
 	public void init(AbstractUtilitySpace utilSpace, Deadline dl, TimeLineInfo tl, long randomSeed, AgentID agentId) {
@@ -39,6 +41,7 @@ public class Group16 extends AbstractNegotiationParty {
 
 		offerHistory = new OfferHistory();
 		agents = new ArrayList<Agent>();
+		bestBids = new ArrayList<BidTemp>();
 	}
 
 	/**
@@ -53,33 +56,54 @@ public class Group16 extends AbstractNegotiationParty {
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		// Check remaining time of negotiation, if almost finished, set RV = 1
-		boolean isAlmostFinished = this.isAlmostFinished();
-		boolean isDeadline = this.isDeadline();
+		// boolean isAlmostFinished = this.isAlmostFinished();
+		// boolean isDeadline = this.isDeadline();
 		double LRBUtility = this.getUtility(lastReceivedBid);
 		double BRBUtility = this.getUtility(BestReceivedBid);
-		
-		if(isDeadline){
+		Bid UpcomingBid = null;
+
+		// utility opponent lower than utility us, then accept
+		if (OpUtility < this.getUtility(lastReceivedBid)) {
 			return new Accept(getPartyId(), lastReceivedBid);
 		}
-		
-		if(LRBUtility > OpUtility){ //change 0.8 with utility opponent
-			if(LRBUtility < BRBUtility){
-				utilitySpace.setReservationValue(this.getUtility(ourBestBid));
-				lastOfferedBid = generateRandomWalkerBid();
-				//lastOfferedBid = BiddingStrategy(5);
-				return new Offer(getPartyId(), lastOfferedBid);
+
+		if (isAlmostFinished()) {
+			if (this.getUtility(lastReceivedBid) > this.getUtility(BestReceivedBid)) {
+				return new Accept(getPartyId(), lastReceivedBid);
+			} else {
+				if (bestBids.size() != 0) {
+					if (bestBids.size() > 0)
+						return new Offer(getPartyId(),
+								bestBids.get(GeneralHelper.generateRandom(0, bestBids.size() - 1)).bid);
+					else
+						return new Offer(getPartyId(), bestBids.get(0).bid);
+				} else {
+					UpcomingBid = BiddingStrategy();
+					lastOfferedBid = UpcomingBid;
+					return new Offer(getPartyId(), UpcomingBid);
+				}
 			}
-			else{
-				return new Accept(getPartyId(), BestReceivedBid);
-			}
-		} else{						
-			lastOfferedBid = generateRandomWalkerBid();
-			utilitySpace.setReservationValue(this.getUtility(ourBestBid));
-			//lastOfferedBid = BiddingStrategy(5);
-			return new Offer(getPartyId(), lastOfferedBid);		
 		}
 
-		
+		if (LRBUtility > OpUtility) { // change 0.8 with utility opponent
+			if (LRBUtility < BRBUtility) {
+				UpcomingBid = BestReceivedBid;
+				lastOfferedBid = UpcomingBid;
+				return new Offer(getPartyId(), UpcomingBid);
+			} else {
+				return new Accept(getPartyId(), lastReceivedBid);
+			}
+		} else {
+			UpcomingBid = BiddingStrategy();
+			// utilitySpace.setReservationValue(this.getUtility(ourBestBid));
+			if (this.getUtility(UpcomingBid) < this.getUtility(lastReceivedBid)) {
+				return new Accept(getPartyId(), lastReceivedBid);
+			} else {
+				lastOfferedBid = UpcomingBid;
+				return new Offer(getPartyId(), UpcomingBid);
+			}
+		}
+
 	}
 
 	/**
@@ -94,21 +118,25 @@ public class Group16 extends AbstractNegotiationParty {
 	 */
 	@Override
 	public void receiveMessage(AgentID sender, Action action) {
-		
+
 		super.receiveMessage(sender, action);
 		if (action instanceof Offer) {
 			addAgent(sender.toString(), (Offer) action);
 			offerHistory.addOffer((Offer) action);
-			lastReceivedBid = ((Offer) action).getBid();			
+			lastReceivedBid = ((Offer) action).getBid();
 		} else {
 			this.utilitySpace.setReservationValue(this.getUtility(lastOfferedBid));
 		}
-		
+
 		if (BestReceivedBid == null) {
 			BestReceivedBid = lastReceivedBid;
+			if (BestReceivedBid != null)
+				bestBids.add(new BidTemp(this.getUtility(BestReceivedBid), BestReceivedBid));
 		} else {
 			if (this.getUtility(BestReceivedBid) < this.getUtility(lastReceivedBid)) {
 				BestReceivedBid = lastReceivedBid;
+				if (BestReceivedBid != null)
+					bestBids.add(new BidTemp(this.getUtility(BestReceivedBid), BestReceivedBid));
 			}
 		}
 
@@ -133,37 +161,46 @@ public class Group16 extends AbstractNegotiationParty {
 		Bid prevresult = null;
 		boolean isAlmostFinished = this.isAlmostFinished();
 		boolean isTimeOut = this.isTimeOut();
-		
-		do {
-			prevresult = result;
-			result = generateRandomBid();
-			if (this.getUtility(prevresult) > this.getUtility(result)){
-				result = prevresult;
-			}
-			isAlmostFinished = this.isAlmostFinished();
-			
-		} while (this.getUtility(result) <= this.utilitySpace.getReservationValue() && !isAlmostFinished && !isTimeOut);
-		
-		if(this.getUtility(result) > this.getUtility(ourBestBid)){
-			ourBestBid = result;
-		}
-		//if reservation value is 1 because of deadline, but random bid hasn't found
-		//assign random bid with last offered bid
-		//if (this.utilitySpace.getReservationValue() == 1.0){
+		boolean isDeadline = this.isDeadline();
 
-		
-		if(result == null){
-			if (lastOfferedBid == null){
+		if (this.utilitySpace.getReservationValue() == 1.00 && !isDeadline) {
+			result = ourBestBid;
+		} else {
+			do {
+				prevresult = result;
 				result = generateRandomBid();
-			}else{
-				result = lastOfferedBid;
+				if (this.getUtility(prevresult) > this.getUtility(result)) {
+					result = prevresult;
+				}
+				isAlmostFinished = this.isAlmostFinished();
+
+			} while (this.getUtility(result) <= this.utilitySpace.getReservationValue() && !isAlmostFinished
+					&& !isTimeOut);
+
+			if (this.getUtility(result) > this.getUtility(ourBestBid)) {
+				ourBestBid = result;
 			}
-		}else{
-			if (lastOfferedBid != null){
-				if (this.getUtility(result) < this.getUtility(this.lastOfferedBid) ){
-					result = this.lastOfferedBid;}
+			// if reservation value is 1 because of deadline, but random bid
+			// hasn't
+			// found
+			// assign random bid with last offered bid
+			// if (this.utilitySpace.getReservationValue() == 1.0){
+
+			if (result == null) {
+				if (lastOfferedBid == null) {
+					result = generateRandomBid();
+				} else {
+					result = lastOfferedBid;
+				}
+			} else {
+				if (lastOfferedBid != null) {
+					if (this.getUtility(result) < this.getUtility(this.lastOfferedBid)) {
+						result = this.lastOfferedBid;
+					}
+				}
 			}
 		}
+
 		return result;
 	}
 
@@ -180,8 +217,16 @@ public class Group16 extends AbstractNegotiationParty {
 		Bid result = null;
 		Bid prevresult = null;
 		boolean isTimeOut = this.isTimeOut();
-		boolean isAlmostFinished = this.isAlmostFinished();
-		double reservationValuetemp = 1.00;
+		boolean isDeadline = this.isDeadline();
+		double avgUtility = 0.00;
+
+		if (this.getUtility(lastOfferedBid) == 1) {
+			// result = lastOfferedBid;
+			this.utilitySpace.setReservationValue(this.getUtility(lastOfferedBid) - 0.1);
+			// return result;
+		} else {
+			this.utilitySpace.setReservationValue(this.getUtility(lastOfferedBid) - 0.05);
+		}
 
 		do {
 			prevresult = result;
@@ -189,21 +234,12 @@ public class Group16 extends AbstractNegotiationParty {
 			if (this.getUtility(prevresult) > this.getUtility(result)) {
 				result = prevresult;
 			}
-
-		} while ((this.getUtility(result) > (reservationValuetemp - 0.05)) && !isTimeOut && !isAlmostFinished);
-
-		// if reservationValue - 0.1 is lower than actual reservation value,
-		// then fill temp with actual RV
-		if ((reservationValuetemp - 0.1) < this.utilitySpace.getReservationValue()) {
-			reservationValuetemp = this.utilitySpace.getReservationValue();
-		} else {
-			reservationValuetemp = reservationValuetemp - 0.1;
-		}
+		} while ((this.getUtility(result) <= this.utilitySpace.getReservationValue()) && !isTimeOut && !isDeadline);
 
 		// if result is still null because timeout
-		// lower the utility to utility - 0.3, and get any random bid >utility -
-		// 0.3
+		// search for bid which in average utility
 		if (result == null) {
+			avgUtility = (this.getUtility(ourBestBid) + OpUtility) / 2;
 			do {
 				prevresult = result;
 				result = generateRandomBid();
@@ -211,15 +247,20 @@ public class Group16 extends AbstractNegotiationParty {
 					result = prevresult;
 				}
 
-			} while ((this.getUtility(result) > (reservationValuetemp)) && !isTimeOut && !isAlmostFinished);
+			} while ((this.getUtility(result) < avgUtility) && !isTimeOut && !isDeadline);
 
 		}
 
+		// if result is still null, bid with BestReceivedBid
+		if (result == null) {
+			result = BestReceivedBid;
+		}
 		// if random generated bid is not good enough compared to last received
 		// bid,
 		// then bid lastReceivedBid
 		if (this.getUtility(BestReceivedBid) > this.getUtility(result)) {
 			result = this.BestReceivedBid;
+			bestBids.add(new BidTemp(this.getUtility(BestReceivedBid), result));
 		}
 
 		// if result is still null
@@ -227,33 +268,20 @@ public class Group16 extends AbstractNegotiationParty {
 		// bid if it is null.
 		if (result == null) {
 			if (lastOfferedBid != null) {
-				result = this.lastOfferedBid;
+				// result = this.lastOfferedBid;
+				result = bestBids.get(GeneralHelper.generateRandom(0, bestBids.size() - 1)).bid;
+				// result = this.BestReceivedBid;
 			} else {
 				result = generateRandomBid();
 			}
 
 		}
 
-		utilitySpace.setReservationValue(reservationValuetemp);
-
 		return result;
 	}
 
 	public Bid generateSecondHalfBid(int opponentType) {
 		Bid result = null;
-
-		switch (opponentType) {
-		case 1:
-			result = null;
-		case 2:
-			result = generateRandomWalkerBid();
-		case 3:
-			result = null;
-		case 4:
-			result = null;
-		case 5:
-			result = generateConcederBid();
-		}
 
 		return result;
 	}
@@ -266,9 +294,12 @@ public class Group16 extends AbstractNegotiationParty {
 	public boolean isAlmostFinished() {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
+		double currentTime = timeLineInfo.getCurrentTime();
+		double totalTime = timeLineInfo.getTotalTime();
+		double bound = totalTime * 0.3;
 
 		// assign time limit 3/4 of deadline negotiation
-		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime() * 3/4))
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime() * 0.5))
 			result = true;
 
 		return result;
@@ -280,34 +311,34 @@ public class Group16 extends AbstractNegotiationParty {
 		double startTime = timeLineInfo.getTime();
 
 		// assign time limit 2s of deadline negotiation
-		if (timeLineInfo != null && timeLineInfo.getCurrentTime() >= (startTime + 2))
+		if (timeLineInfo != null && timeLineInfo.getCurrentTime() >= (startTime + 10))
 			result = true;
 
 		return result;
 	}
-	
+
 	public boolean isDeadline() {
 		boolean result = false;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
 
-		//assign time limit 11/12 of deadline negotiation
-		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime()*19/20))
+		// assign time limit 11/12 of deadline negotiation
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() >= timeLineInfo.getTotalTime() * 0.95))
 			result = true;
 
 		return result;
-	}	
+	}
 
 	// public Bid BiddingStrategy(int OpponentType, float OpponentBidUtility,
 	// BidHistory BidHist) {
-	public Bid BiddingStrategy(int OpponentType) {
+	public Bid BiddingStrategy() {
 		Bid UpcomingBid = null;
 		TimeLineInfo timeLineInfo = this.getTimeLine();
 
 		// assign time limit 1/2 time
-		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() <= timeLineInfo.getTotalTime() * 1/2)) {
-			UpcomingBid = generateConcederBid();
+		if (timeLineInfo != null && (timeLineInfo.getCurrentTime() <= timeLineInfo.getTotalTime() * 0.5)) {
+			UpcomingBid = generateRandomWalkerBid();
 		} else {
-			UpcomingBid = generateSecondHalfBid(5);
+			UpcomingBid = generateConcederBid();
 		}
 
 		return UpcomingBid;
@@ -329,11 +360,45 @@ public class Group16 extends AbstractNegotiationParty {
 			_agent.addOffer(offer);
 	}
 
+	public Agent getAgent(String id) {
+		for (Agent agent : agents)
+			if (agent.getId().equals(id))
+				return agent;
+
+		return null;
+	}
+
+	public List<Double> getLastNUtilities(String id, int n) {
+		List<Double> listUtil = new ArrayList<Double>();
+
+		Agent agent = getAgent(id);
+
+		if (agent != null && !agent.getOffers().isEmpty()) {
+			if (n > agent.getOffers().size())
+				n = agent.getOffers().size();
+
+			for (int i = 0; i < n; i++)
+				listUtil.add(agent.getUtility(agent.getOffers().get(i).getBid()));
+		}
+
+		return listUtil;
+	}
+
 	public double getUtility(AgentID agentId, Bid bid) {
 		for (Agent agent : agents)
-			if (agent.getId().equals(agentId))
+			if (agent.getId().equals(agentId.toString()))
 				return agent.getUtility(bid);
 
 		return 0;
+	}
+}
+
+class BidTemp {
+	public double utility;
+	public Bid bid;
+
+	public BidTemp(double utility, Bid bid) {
+		this.utility = utility;
+		this.bid = bid;
 	}
 }
