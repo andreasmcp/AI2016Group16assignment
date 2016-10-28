@@ -1,0 +1,36 @@
+Starting negotiation session.
+Round 1
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Handmade, Music: DJ, Cleanup: Water and Soap, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Handmade Food, Drinks: Beer Only, Location: Ballroom, Invitations: Plain, Music: Band, Cleanup: Water and Soap, ])
+Round 2
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Handmade, Music: DJ, Cleanup: Water and Soap, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Finger-Food, Drinks: Beer Only, Location: Party Room, Invitations: Custom, Printed, Music: Band, Cleanup: Special Equiment, ])
+Round 3
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Handmade, Music: DJ, Cleanup: Water and Soap, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Handmade Food, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Printed, Music: Band, Cleanup: Specialized Materials, ])
+Round 4
+  Turn 1: Party 1       (Offer  bid:Bid[Food: Handmade Food, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Handmade, Music: DJ, Cleanup: Water and Soap, ])
+  Turn 2: Party 2       (Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+  Turn 3: Party 3       (Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Ballroom, Invitations: Custom, Printed, Music: MP3, Cleanup: Special Equiment, ])
+Round 5
+  Turn 1: Party 1       (Accept  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Ballroom, Invitations: Custom, Printed, Music: MP3, Cleanup: Special Equiment, ])
+  Turn 2: Party 2       (Accept  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+Found an agreement: Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Ballroom, Invitations: Custom, Printed, Music: MP3, Cleanup: Special Equiment, ]
+Finished negotiation session in 24.009s
+Time (s):		24.009174802
+Rounds:		5
+Agreement?:		Yes
+Discounted?:		No
+3
+Min. utility:		0.57750
+Max. utility:		0.74999
+Distance to pareto:	0.14996
+Distance to Nash:	0.32441
+Social welfare:		2.00880
+Agent utility:		0.57750 (Party 1)
+Agent utility:		0.68131 (Party 2)
+Agent utility:		0.74999 (Party 3)
+

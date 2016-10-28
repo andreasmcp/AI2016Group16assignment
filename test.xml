@@ -9,10 +9,10 @@
             </deadline>
             <protocolItem hasMediatorProfile="false" hasMediator="false" description="Each agents makes offer, counter-offer, or accepts" classPath="negotiator.protocol.StackedAlternatingOffersProtocol" protocolName="Stacked Alternating Offers Protocol"/>
             <partyRepItems>
-                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Random party" classPath="negotiator.parties.RandomCounterOfferNegotiationParty" partyName="Random party">
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="5. Mercury " classPath="agents.anac.y2015.Mercury.Mercury" partyName="ANAC2015-5-Mercury">
                     <properties/>
                 </item>
-                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Random party 2" classPath="negotiator.parties.RandomCounterOfferNegotiationParty" partyName="Random party 2">
+                <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="6. Atlas" classPath="agents.anac.y2015.Atlas3.Atlas3" partyName="ANAC2015-6-Atlas">
                     <properties/>
                 </item>
                 <item protocolClassPath="negotiator.protocol.StackedAlternatingOffersProtocol" description="Party Group 16" classPath="/Users/Kharisnawan/git/AI2016Group16assignment/bin/ai2016/Group16.class" partyName="Group16">
@@ -24,7 +24,7 @@
                 <item url="file:etc/templates/partydomain/party2_utility.xml"/>
                 <item url="file:etc/templates/partydomain/party3_utility.xml"/>
             </partyProfileItems>
-            <numSessions>5</numSessions>
+            <numSessions>1</numSessions>
             <numberOfNonMediatorsPerSession>3</numberOfNonMediatorsPerSession>
             <repetitionAllowed>false</repetitionAllowed>
         </tournament>
