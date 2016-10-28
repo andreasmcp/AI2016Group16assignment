@@ -147,6 +147,7 @@ public class Group16 extends AbstractNegotiationParty {
 		}
 
 		OpUtility = this.getUtility(sender, lastReceivedBid);
+		System.out.println("this");
 	}
 
 	@Override
