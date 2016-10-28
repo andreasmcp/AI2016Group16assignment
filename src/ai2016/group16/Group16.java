@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import ai2016.group16.Agent;
 import ai2016.group16.GeneralHelper;
-import ai2016.group16.OfferHistory;
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.Deadline;
@@ -16,7 +15,6 @@ import negotiator.session.TimeLineInfo;
 import negotiator.utility.AbstractUtilitySpace;
 
 public class Group16 extends AbstractNegotiationParty {
-	private OfferHistory offerHistory;
 	private List<Agent> agents;
 	private Bid lastReceivedBid = null;
 	private Bid BestReceivedBid = null;
@@ -39,7 +37,6 @@ public class Group16 extends AbstractNegotiationParty {
 			utilitySpace.setReservationValue(0.8);
 		}
 
-		offerHistory = new OfferHistory();
 		agents = new ArrayList<Agent>();
 		bestBids = new ArrayList<BidTemp>();
 	}
@@ -127,7 +124,6 @@ public class Group16 extends AbstractNegotiationParty {
 		super.receiveMessage(sender, action);
 		if (action instanceof Offer) {
 			addAgent(sender.toString(), (Offer) action);
-			offerHistory.addOffer((Offer) action);
 			lastReceivedBid = ((Offer) action).getBid();
 		} else {
 			this.utilitySpace.setReservationValue(this.getUtility(lastOfferedBid));
