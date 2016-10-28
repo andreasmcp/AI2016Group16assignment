@@ -2,7 +2,6 @@ package ai2016;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ai2016.group16.Agent;
 import ai2016.group16.GeneralHelper;
 import ai2016.group16.OfferHistory;
