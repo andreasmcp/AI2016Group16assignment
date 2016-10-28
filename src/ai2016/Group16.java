@@ -6,7 +6,6 @@ import ai2016.group16.Agent;
 import ai2016.group16.GeneralHelper;
 import ai2016.group16.OfferHistory;
 import negotiator.AgentID;
-
 import negotiator.Bid;
 import negotiator.Deadline;
 import negotiator.actions.Accept;
